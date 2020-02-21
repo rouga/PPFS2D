@@ -14,8 +14,19 @@ use List;
 
 
 //var file_name = stdin.read(string);
+writeln("Whats is the name of airfoil file (with the extension) ?");
 
-var airfoil_file = open("../airfoil/NACA2412.dat" , iomode.r);
+var file_name = stdin.read(string);
+
+try {
+
+    var airfoil_file = open("../airfoil/" + file_name , iomode.r);
+}
+catch e: FileNotFoundError {
+
+    writeln("File not found ! make sure your file is in the airfoil folder \n");
+    exit(0);
+}
 
 // Adding a channel
 var airfoil_channel = airfoil_file.reader();
@@ -113,5 +124,8 @@ for i in 1..number_of_points do{
     
 }
 
-writeln(x_airfoil_coordinates);
-writeln(y_airfoil_coordinates);
+
+proc main() {
+
+    writeln("This is AIRFOIL_PARSER module");
+}
