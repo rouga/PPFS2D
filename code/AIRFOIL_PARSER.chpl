@@ -78,7 +78,7 @@ else{
     starting_line += 1;
     
 
-    while (airfoil_data_string[starting_line].toLower() != 'end\n' && starting_line <= file_line_nbr) do {
+    while (airfoil_data_string[starting_line].toLower() != "end\n" && airfoil_data_string[starting_line].toLower() != "end" && starting_line <= file_line_nbr ) do {
         
         airfoil_coordinates_string.append(airfoil_data_string[starting_line]);
         starting_line += 1;
@@ -89,7 +89,9 @@ else{
 
 // Writing the message below and aborting program in case no END statement is found
 var ending_line = starting_line;
-if ending_line == file_line_nbr then {
+writeln(file_line_nbr);
+writeln(ending_line);
+if ending_line > file_line_nbr then {
 
     writeln("|---AIRFOIL_PARSER---| No END statement found in airfoil input file");
     exit(0);
