@@ -1,7 +1,7 @@
 /*
 File : AIRFOIL_PARSER.chpl
 Author : Amin Ouled-Mohamed
-Date : 20/02/2020 22:21
+Date : 22/02/2020 22:21
 Last revised : 21/02/2020 01:35
 Desc : Program parses airfoil coordinates (geometry) from file specified by the user.
 Usage : input --> airfoil coordinates file in airfoil folder
@@ -14,18 +14,23 @@ use List;
 
 
 //var file_name = stdin.read(string);
-writeln("Whats is the name of airfoil file (with the extension) ?");
+writeln("|---AIRFOIL_PARSER---| What is the name of airfoil file (with the extension) ?");
 
 var file_name = stdin.read(string);
+var airfoil_file : file;
 
 try {
+    
 
-    var airfoil_file = open("../airfoil/" + file_name , iomode.r);
+    airfoil_file = open("../airfoil/" + file_name , iomode.r);
 }
 catch e: FileNotFoundError {
 
-    writeln("File not found ! make sure your file is in the airfoil folder \n");
+    writeln("|---AIRFOIL_PARSER---| File not found ! make sure your file is in the airfoil folder \n");
     exit(0);
+}
+catch {
+    writeln("|---AIRFOIL_PARSER---| Make sure the file is written in the correct ");
 }
 
 // Adding a channel
@@ -60,7 +65,7 @@ var airfoil_coordinates_string : list(string);
 // Writing the message below and aborting program in case no START statement is found
 if (starting_line == file_line_nbr) then {
 
-    writeln("No START statement found in airfoil input file");
+    writeln("|---AIRFOIL_PARSER---| No START statement found in airfoil input file");
     exit(0);
 }
 
@@ -86,7 +91,7 @@ else{
 var ending_line = starting_line;
 if ending_line == file_line_nbr then {
 
-    writeln("No END statement found in airfoil input file");
+    writeln("|---AIRFOIL_PARSER---| No END statement found in airfoil input file");
     exit(0);
 }
 
@@ -123,9 +128,32 @@ for i in 1..number_of_points do{
 
     
 }
+// Next code is to determine if points are in the CW or CCW direction
+var edge : [1..number_of_points] real;
+for i in 1..number_of_points do {
 
+    if i == number_of_points then {
 
-proc main() {
+        edge[i] = (x_airfoil_coordinates[1]-x_airfoil_coordinates[i])*(y_airfoil_coordinates[1]+y_airfoil_coordinates[i]);
+    }
 
-    writeln("This is AIRFOIL_PARSER module");
+    else {
+
+    edge[i] = (x_airfoil_coordinates[i+1]-x_airfoil_coordinates[i])*(y_airfoil_coordinates[i+1]+y_airfoil_coordinates[i]);
+
+    }
+    
 }
+var sum_edge = + reduce edge;
+
+if sum_edge < 0 then {
+    writeln("|---AIRFOIL_PARSER---| Points are in the CCW direction, Reversing...");
+    x_airfoil_coordinates.reverse();
+    y_airfoil_coordinates.reverse();
+}
+
+else if sum_edge > 0 then {
+    writeln("|---AIRFOIL_PARSER---| Points are in the CW direction, not reversing...");
+}
+
+writeln("|---AIRFOIL_PARSER---| Airfoil file parsed successfuly !!");
