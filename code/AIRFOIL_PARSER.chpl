@@ -89,8 +89,6 @@ else{
 
 // Writing the message below and aborting program in case no END statement is found
 var ending_line = starting_line;
-writeln(file_line_nbr);
-writeln(ending_line);
 if ending_line > file_line_nbr then {
 
     writeln("|---AIRFOIL_PARSER---| No END statement found in airfoil input file");
@@ -125,8 +123,8 @@ for i in 1..number_of_points do{
     index_of_end = airfoil_coordinates_string[i].find("\n"):int;
 
     // Converting the string coordinates from string to real and assigning them to initialized arrays
-    x_airfoil_coordinates[i] = airfoil_coordinates_string[i][1..index_of_space-1]:real;
-    y_airfoil_coordinates[i] = airfoil_coordinates_string[i][index_of_space_2+1..index_of_end-1]:real;
+    x_airfoil_coordinates[i] = airfoil_coordinates_string[i][1..index_of_space-1].replace(" ","",-1):real;
+    y_airfoil_coordinates[i] = airfoil_coordinates_string[i][index_of_space_2+1..index_of_end-1].replace(" ","",-1):real;
 
     
 }

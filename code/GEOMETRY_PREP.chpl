@@ -17,12 +17,28 @@ TO-DO : # add a descretization file if necessary (changes precision of the solut
 
 use AIRFOIL_PARSER only x_airfoil_coordinates, y_airfoil_coordinates;
 use Math only atan2, pi;
+use GEOMETRY_REF only refine_geometry;
 
 
-var x_edge_pts = x_airfoil_coordinates;
-var y_edge_pts = y_airfoil_coordinates;
+var old_x_edge_pts = x_airfoil_coordinates;
+var old_y_edge_pts = y_airfoil_coordinates;
+writeln(old_x_edge_pts);
+writeln(old_y_edge_pts,"\n\n");
 
-var nb_of_panel = AIRFOIL_PARSER.number_of_points - 1;
+var nb_ref = 1;
+
+var x_edge_pts : [1..(2**nb_ref)*(old_x_edge_pts.size-1)] real;
+var y_edge_pts : [1..(2**nb_ref)*(old_x_edge_pts.size-1)] real;
+
+var edge_points = [x_edge_pts,y_edge_pts] ;
+
+edge_points = refine_geometry(nb_ref,old_x_edge_pts,old_y_edge_pts);
+x_edge_pts = edge_points[1];
+y_edge_pts = edge_points[2];
+writeln(x_edge_pts,"\n\n");
+writeln(y_edge_pts);
+
+var nb_of_panel = x_edge_pts.size - 1;
 
 //Asking for value of angle of attack (begin with a single value but can include a range)
 var aoa : real;
@@ -112,4 +128,3 @@ var beta_panels : [1..nb_of_panel] real ;
 
 beta_panels = normal_to_panels - aoa;
 
-writeln(beta_panels);
