@@ -1,4 +1,15 @@
-
+/*
+File : GEOMETRY_REF.chpl
+Author : Amin Ouled-Mohamed
+Date : 22/02/2020 22:21
+Last revised : 21/02/2020 01:35
+Desc : Function refines the geometry of the airfoil by adding a mid point to every panel.
+Usage : input --> nb_ref : how many times the airfoil will be refined 
+                           for example, if nb_ref=1, every panel will be subdivided once in 2 equal panels
+                           if nb_ref=2, every panel will be subdivied twice with a result of 4 equal panels
+                           in the initial one
+        output --> the new refined geometry
+*/
 
 proc refine_geometry(nb_ref:int, x_coord, y_coord) {
 
@@ -6,7 +17,7 @@ proc refine_geometry(nb_ref:int, x_coord, y_coord) {
     var new_x_coord : [1..(2**nb_ref)*(x_coord.size-1)] real;
     var new_y_coord :  [1..(2**nb_ref)*(y_coord.size-1)] real;
 
-    var coeff : int ;
+    var coeff : real ;
     for i in 1..x_coord.size-1 do {
 
         
@@ -33,12 +44,9 @@ proc refine_geometry(nb_ref:int, x_coord, y_coord) {
             new_y_coord[j] = y_coord[i] + (y_coord[i+1]-y_coord[i])*(coeff/(2**nb_ref));
             coeff += 1;
 
-
             }
         }
-
     }
-    writeln(new_x_coord.size,new_y_coord.size);
     var all_coord = [new_x_coord,new_y_coord];
 
     return all_coord;

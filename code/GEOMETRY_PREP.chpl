@@ -22,21 +22,33 @@ use GEOMETRY_REF only refine_geometry;
 
 var old_x_edge_pts = x_airfoil_coordinates;
 var old_y_edge_pts = y_airfoil_coordinates;
-writeln(old_x_edge_pts);
-writeln(old_y_edge_pts,"\n\n");
+var x_edge_pts = old_x_edge_pts;
+var y_edge_pts = old_y_edge_pts;
 
-var nb_ref = 1;
+writeln("|---GEOMETRY_PREP---| Do you want to refine the airfoil geometry ? (y/n)");
+var ref_ans = stdin.read(string);
 
-var x_edge_pts : [1..(2**nb_ref)*(old_x_edge_pts.size-1)] real;
-var y_edge_pts : [1..(2**nb_ref)*(old_x_edge_pts.size-1)] real;
+if ref_ans.toLower() == "n" then {
+    void;
+    
+}
 
-var edge_points = [x_edge_pts,y_edge_pts] ;
+else if ref_ans.toLower() == "y" then {
 
-edge_points = refine_geometry(nb_ref,old_x_edge_pts,old_y_edge_pts);
-x_edge_pts = edge_points[1];
-y_edge_pts = edge_points[2];
-writeln(x_edge_pts,"\n\n");
-writeln(y_edge_pts);
+    writeln("|--GEOMETRY_PREP---| How many times ? (integer)");
+    var nb_ref = stdin.read(int);
+
+    var x_edge_pts : [1..(2**nb_ref)*(old_x_edge_pts.size-1)] real;
+    var y_edge_pts : [1..(2**nb_ref)*(old_x_edge_pts.size-1)] real;
+
+    var edge_points = [x_edge_pts,y_edge_pts] ;
+
+    edge_points = refine_geometry(nb_ref,old_x_edge_pts,old_y_edge_pts);
+    x_edge_pts = edge_points[1];
+    y_edge_pts = edge_points[2];
+
+}
+
 
 var nb_of_panel = x_edge_pts.size - 1;
 
@@ -126,5 +138,4 @@ normal_to_panels = orientation_panels + pi/2;
 
 var beta_panels : [1..nb_of_panel] real ;
 
-beta_panels = normal_to_panels - aoa;
-
+beta_panels = normal_to_panels - aoa ;

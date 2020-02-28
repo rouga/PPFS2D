@@ -112,10 +112,6 @@ for i in 1..number_of_points do{
     // This method finds the index of the first space after the first coordinate
     // and the first space before the second coordinate and the index of the newline
     // carater. By finding these 3 indexes, we can split x y coordinates easily
-
-    //looking for the index of the first space appearence from left to right
-    index_of_space = airfoil_coordinates_string[i].find(" "):int;
-
     //looking for the index of the first space appearence from right to left
     index_of_space_2 = airfoil_coordinates_string[i].rfind(" "):int;
 
@@ -123,7 +119,7 @@ for i in 1..number_of_points do{
     index_of_end = airfoil_coordinates_string[i].find("\n"):int;
 
     // Converting the string coordinates from string to real and assigning them to initialized arrays
-    x_airfoil_coordinates[i] = airfoil_coordinates_string[i][1..index_of_space-1].replace(" ","",-1):real;
+    x_airfoil_coordinates[i] = airfoil_coordinates_string[i][1..index_of_space_2].replace(" ","",-1):real;
     y_airfoil_coordinates[i] = airfoil_coordinates_string[i][index_of_space_2+1..index_of_end-1].replace(" ","",-1):real;
 
     
