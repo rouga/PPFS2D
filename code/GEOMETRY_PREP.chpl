@@ -7,8 +7,8 @@ Desc : Program prepares the geometry by computing important parameters (control 
 Usage : input --> x,y airfoil in an array, in the correct orientation
         output --> x_ctrl_pts,y_ctrl_pts : 2 1D arrays containing coordinates of control points
                    length_panels :  1D array with panels surfaces
-                   orientation_panels :  1D array with panels orientation
-                   normal_to_panels : 1D array with angle of the vector normal to the panel
+                   orientation_panels :  1D array with panels orientation (phi)
+                   normal_to_panels : 1D array with angle of the vector normal to the panel (del)
                    beta_panels : 1D array with angles between angle of attack and vector normal to panel
 
 TO-DO : # add a descretization file if necessary (changes precision of the solution)
@@ -35,7 +35,7 @@ if ref_ans.toLower() == "n" then {
 
 else if ref_ans.toLower() == "y" then {
 
-    writeln("|--GEOMETRY_PREP---| How many times ? (integer)");
+    writeln("|---GEOMETRY_PREP---| How many times ? (integer)");
     var nb_ref = stdin.read(int);
 
     var x_edge_pts : [1..(2**nb_ref)*(old_x_edge_pts.size-1)] real;
@@ -47,6 +47,9 @@ else if ref_ans.toLower() == "y" then {
     x_edge_pts = edge_points[1];
     y_edge_pts = edge_points[2];
 
+    writeln("|---GEOMETRY_PREP---| ", x_edge_pts.size- old_x_edge_pts.size, " nodes added to the geometry !");
+    writeln("Previous total number of nodes : " ,old_x_edge_pts.size, "\nNew total number of nodes : ",x_edge_pts.size);
+
 }
 
 
@@ -54,7 +57,7 @@ var nb_of_panel = x_edge_pts.size - 1;
 
 //Asking for value of angle of attack (begin with a single value but can include a range)
 var aoa : real;
-writeln("|--GEOMETRY_PREP---| Value of angle of attack of freestream velocity (in degrees) ?");
+writeln("|---GEOMETRY_PREP---| Value of angle of attack of freestream velocity (in degrees) ?");
 aoa = stdin.read(real);
 aoa = aoa*(pi/180);
 

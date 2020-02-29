@@ -4,6 +4,7 @@ Author : Amin Ouled-Mohamed
 Date : 22/02/2020 22:21
 Last revised : 21/02/2020 01:35
 Desc : Function refines the geometry of the airfoil by adding a mid point to every panel.
+       This file is a sub-module of GEOMETRY_PREP (used only in that module)
 Usage : input --> nb_ref : how many times the airfoil will be refined 
                            for example, if nb_ref=1, every panel will be subdivided once in 2 equal panels
                            if nb_ref=2, every panel will be subdivied twice with a result of 4 equal panels
