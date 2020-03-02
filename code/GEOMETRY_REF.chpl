@@ -15,18 +15,19 @@ Usage : input --> nb_ref : how many times the airfoil will be refined
 proc refine_geometry(nb_ref:int, x_coord, y_coord) {
 
 
-    var new_x_coord : [1..(2**nb_ref)*(x_coord.size-1)] real;
-    var new_y_coord :  [1..(2**nb_ref)*(y_coord.size-1)] real;
+    var new_x_coord : [1..(2**nb_ref)*(x_coord.size)] real;
+    var new_y_coord :  [1..(2**nb_ref)*(y_coord.size)] real;
 
     var coeff : real ;
-    for i in 1..x_coord.size-1 do {
+    
+    for i in 1..x_coord.size do {
 
         
         new_x_coord[(i-1)*(2**nb_ref)+1] = x_coord[i];
         new_y_coord[(i-1)*(2**nb_ref)+1] = y_coord[i];
         coeff = 1;
 
-        if i == x_coord.size-1 then{        
+        if i == x_coord.size then{        
                 
             for j in (i-1)*(2**nb_ref)+2..(i)*(2**nb_ref) do {
 

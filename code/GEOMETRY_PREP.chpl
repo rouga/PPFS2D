@@ -6,7 +6,7 @@ Last revised : 21/02/2020 01:35
 Desc : Program prepares the geometry by computing important parameters (control points, panel surface, panel orientation ....) .
 Usage : input --> x,y airfoil in an array, in the correct orientation
         output --> x_ctrl_pts,y_ctrl_pts : 2 1D arrays containing coordinates of control points
-                   length_panels :  1D array with panels surfaces
+                   length_panel :  1D array with panels surfaces
                    orientation_panels :  1D array with panels orientation (phi)
                    normal_to_panels : 1D array with angle of the vector normal to the panel (del)
                    beta_panels : 1D array with angles between angle of attack and vector normal to panel
@@ -22,36 +22,29 @@ use GEOMETRY_REF only refine_geometry;
 
 var old_x_edge_pts = x_airfoil_coordinates;
 var old_y_edge_pts = y_airfoil_coordinates;
-var x_edge_pts = old_x_edge_pts;
-var y_edge_pts = old_y_edge_pts;
 
-writeln("|---GEOMETRY_PREP---| Do you want to refine the airfoil geometry ? (y/n)");
-var ref_ans = stdin.read(string);
 
-if ref_ans.toLower() == "n" then {
-    void;
-    
-}
 
-else if ref_ans.toLower() == "y" then {
 
-    writeln("|---GEOMETRY_PREP---| How many times ? (integer)");
-    var nb_ref = stdin.read(int);
+writeln("|---GEOMETRY_PREP---| How much do you want to refine the geometry ? (enter 0 to keep the original)");
 
-    var x_edge_pts : [1..(2**nb_ref)*(old_x_edge_pts.size-1)] real;
-    var y_edge_pts : [1..(2**nb_ref)*(old_x_edge_pts.size-1)] real;
+var nb_ref = stdin.read(int);
 
-    var edge_points = [x_edge_pts,y_edge_pts] ;
+var x_edge_pts : [1..(2**nb_ref)*(old_x_edge_pts.size)] real;
+var y_edge_pts : [1..(2**nb_ref)*(old_x_edge_pts.size)] real;
 
-    edge_points = refine_geometry(nb_ref,old_x_edge_pts,old_y_edge_pts);
-    x_edge_pts = edge_points[1];
-    y_edge_pts = edge_points[2];
+var edge_points = [x_edge_pts,y_edge_pts] ;
 
-    writeln("|---GEOMETRY_PREP---| ", x_edge_pts.size- old_x_edge_pts.size, " nodes added to the geometry !");
-    writeln("Previous total number of nodes : " ,old_x_edge_pts.size, "\nNew total number of nodes : ",x_edge_pts.size);
+edge_points = refine_geometry(nb_ref,old_x_edge_pts,old_y_edge_pts);
+x_edge_pts = edge_points[1];
+y_edge_pts = edge_points[2];
 
-}
 
+writeln("|---GEOMETRY_PREP---| ", x_edge_pts.size- old_x_edge_pts.size, " nodes added to the geometry !");
+writeln("Previous total number of nodes : " ,old_x_edge_pts.size, "\nNew total number of nodes : ",x_edge_pts.size);
+
+
+writeln(x_edge_pts.size);
 
 var nb_of_panel = x_edge_pts.size - 1;
 
