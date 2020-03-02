@@ -23,6 +23,7 @@ proc compute_integrals (cpu_num:int,len_panel ,panel_orient ,x_ctrl_pts ,y_ctrl_
        var lock1 : atomic int;
        var watch: Timer;
        watch.start();
+       var length = x_ctrl_pts.size ; 
        forall task in 0..cpu_num-1 do {
 
               var A : real;
@@ -45,51 +46,71 @@ proc compute_integrals (cpu_num:int,len_panel ,panel_orient ,x_ctrl_pts ,y_ctrl_
                      }
               }
 
-              writeln(task_intervall1, " to " , task_intervall2);
-
               for i in task_intervall1..task_intervall2 do {
 
-                     for j in 1..x_ctrl_pts.size do {
+                     for j in 1..length do {
 
-                            A = -(x_ctrl_pts[i]-x_edge_pts[j])*cos(panel_orient[j])-(y_ctrl_pts[i]-x_edge_pts[j])*sin(panel_orient[j]);
+                            if j == 1 then {
 
-                            B = (x_ctrl_pts[i]-x_edge_pts[j])**2 + (y_ctrl_pts[i]-x_edge_pts[j])**2 ;
+                            A = -(x_ctrl_pts[i]-x_edge_pts[length])*cos(panel_orient[j])-(y_ctrl_pts[i]-y_edge_pts[length])*sin(panel_orient[j]);
+
+                            B = (x_ctrl_pts[i]-x_edge_pts[length])**2 + (y_ctrl_pts[i]-y_edge_pts[length])**2 ;
 
                             C_n = sin(panel_orient[i]-panel_orient[j]);
 
-                            D_n = -(x_ctrl_pts[i]-x_edge_pts[j])*sin(panel_orient[i]) + (y_ctrl_pts[i]-y_edge_pts[j])*cos(panel_orient[i]);
+                            D_n = -(x_ctrl_pts[i]-x_edge_pts[length])*sin(panel_orient[i]) + (y_ctrl_pts[i]-y_edge_pts[length])*cos(panel_orient[i]);
 
-                            E = sqrt(B-A**2);
+                            C_t = -cos(panel_orient[i]-panel_orient[j]);
+                            D_t = (x_ctrl_pts[i]-x_edge_pts[length])*cos(panel_orient[i]) + (y_ctrl_pts[i]-y_edge_pts[length])*sin(panel_orient[i]);
+                            }
+
+                            else {
+
+                            A = -(x_ctrl_pts[i]-x_edge_pts[j-1])*cos(panel_orient[j])-(y_ctrl_pts[i]-y_edge_pts[j-1])*sin(panel_orient[j]);
+
+                            B = (x_ctrl_pts[i]-x_edge_pts[j-1])**2 + (y_ctrl_pts[i]-y_edge_pts[j-1])**2 ;
+
+                            C_n = sin(panel_orient[i]-panel_orient[j]);
+
+                            D_n = -(x_ctrl_pts[i]-x_edge_pts[j-1])*sin(panel_orient[i]) + (y_ctrl_pts[i]-y_edge_pts[j-1])*cos(panel_orient[i]);
+
+                            C_t = -cos(panel_orient[i]-panel_orient[j]);
+                            D_t = (x_ctrl_pts[i]-x_edge_pts[j-1])*cos(panel_orient[i]) + (y_ctrl_pts[i]-y_edge_pts[j-1])*sin(panel_orient[i]);
+
+
+                            }
+
+                            if B-A**2 < 0 then {
+
+                                   E = 0;
+                            }
+                            else {
+                                   E = sqrt(B-A**2);
+                            }
+                              
 
                             if i == j then {
 
                                    I_n[i,j] = pi;
+                                   I_t[i,j] = 0;
 
                             }
                             else {
 
                                    I_n[i,j] = ( 0.5*C_n*log((len_panel[j]**2 + 2*A*len_panel[j] + B)/B)
-                                                 + ((D_n-A*C_n)/E)*atan2((len_panel[j]+A),E)-atan2(A,E) );
+                                                 + ((D_n-A*C_n)/E)*(atan2((len_panel[j]+A),E)-atan2(A,E)) );
+
+                                   I_t[i,j] = ( 0.5*C_t*log((len_panel[j]**2 + 2*A*len_panel[j] + B)/B)
+                                   + ((D_t-A*C_t)/E)*(atan2((len_panel[j]+A),E)-atan2(A,E)) );
                             }
 
-                            C_t = -cos(panel_orient[i]-panel_orient[j]);
-                            D_t = (x_ctrl_pts[i]-x_edge_pts[j])*cos(panel_orient[i]) + (y_ctrl_pts[i]-y_edge_pts[j])*sin(panel_orient[i]);
-
-                            I_t[i,j] = ( 0.5*C_n*log((len_panel[j]**2 + 2*A*len_panel[j] + B)/B)
-                                   + ((D_t-A*C_t)/E)*atan2((len_panel[j]+A),E)-atan2(A,E) );
-
                      }
-              
-              
 
               }
-              writeln("task " , task, " done!!");
+
               lock1.add(1);
               lock1.waitFor(cpu_num);
               
-              
-              
-
        }
 
        watch.stop();

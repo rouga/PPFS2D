@@ -3,7 +3,7 @@ use PANEL_INTEGRALS only compute_integrals;
 
 
 
-writeln("Number of CPU cores to use for solving the problem ? ", "( There's ", here.numPUs()," cores in this PC)" );
+writeln("|---PANEL_SOLVER---| Number of CPU cores to use for solving the problem ? ", "( There's ", here.numPUs()," cores in this PC)" );
 var num_CPU = stdin.read(int);
 
 
@@ -16,7 +16,5 @@ integrals = compute_integrals(num_CPU:int,length_panel ,orientation_panels ,x_ct
 
 I_n = integrals[1];
 I_t = integrals[2];
-writeln(1..x_ctrl_pts.size);
-writeln(I_n.shape);
-writeln(I_t.shape);
+
 

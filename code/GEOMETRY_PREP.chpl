@@ -26,6 +26,8 @@ var old_y_edge_pts = y_airfoil_coordinates;
 
 
 
+
+
 writeln("|---GEOMETRY_PREP---| How much do you want to refine the geometry ? (enter 0 to keep the original)");
 
 var nb_ref = stdin.read(int);
@@ -44,9 +46,7 @@ writeln("|---GEOMETRY_PREP---| ", x_edge_pts.size- old_x_edge_pts.size, " nodes 
 writeln("Previous total number of nodes : " ,old_x_edge_pts.size, "\nNew total number of nodes : ",x_edge_pts.size);
 
 
-writeln(x_edge_pts.size);
-
-var nb_of_panel = x_edge_pts.size - 1;
+var nb_of_panel = x_edge_pts.size;
 
 //Asking for value of angle of attack (begin with a single value but can include a range)
 var aoa : real;
@@ -59,15 +59,15 @@ var x_ctrl_pts, y_ctrl_pts : [1..nb_of_panel] real ;
 
 for i in 1..nb_of_panel do {
 
-    if i == nb_of_panel then {
+    if i == 1 then {
 
-    x_ctrl_pts[i] = 0.5*(x_edge_pts[1]+x_edge_pts[i]);
-    y_ctrl_pts[i] = 0.5*(y_edge_pts[1]+y_edge_pts[i]);
+    x_ctrl_pts[i] = 0.5*(x_edge_pts[nb_of_panel]+x_edge_pts[i]);
+    y_ctrl_pts[i] = 0.5*(y_edge_pts[nb_of_panel]+y_edge_pts[i]);
 
     }
     else {
-        x_ctrl_pts[i] = 0.5*(x_edge_pts[i+1]+x_edge_pts[i]);
-        y_ctrl_pts[i] = 0.5*(y_edge_pts[i+1]+y_edge_pts[i]);
+        x_ctrl_pts[i] = 0.5*(x_edge_pts[i]+x_edge_pts[i-1]);
+        y_ctrl_pts[i] = 0.5*(y_edge_pts[i]+y_edge_pts[i-1]);
 
     }
 
@@ -78,15 +78,15 @@ var length_panel : [1..nb_of_panel] real;
 
 for i in 1..nb_of_panel do {
 
-    if i==nb_of_panel then {
+    if i==1 then {
 
-        length_panel[i] = (x_edge_pts[1]-x_edge_pts[i])**2 + (x_edge_pts[1]-x_edge_pts[i])**2;
+        length_panel[i] = ((x_edge_pts[i]-x_edge_pts[nb_of_panel])**2 + (y_edge_pts[i]-y_edge_pts[nb_of_panel])**(2))**0.5;
 
     }
 
     else{
 
-        length_panel[i] = (x_edge_pts[i+1]-x_edge_pts[i])**2 + (y_edge_pts[i+1]-y_edge_pts[i])**2;
+        length_panel[i] = ((x_edge_pts[i]-x_edge_pts[i-1])**2 + (y_edge_pts[i]-y_edge_pts[i-1])**2)**0.5;
 
     }
 
@@ -98,9 +98,9 @@ var orientation_panels : [1..nb_of_panel] real ;
 
 for i in 1..nb_of_panel do {
 
-    if i == nb_of_panel then {
+    if i == 1 then {
 
-        orientation_panels[i] = atan2(y_edge_pts[1]-y_edge_pts[i],x_edge_pts[1]-x_edge_pts[i]);
+        orientation_panels[i] = atan2(y_edge_pts[i]-y_edge_pts[nb_of_panel],x_edge_pts[i]-x_edge_pts[nb_of_panel]);
 
         if orientation_panels[i] < 0 then {
 
@@ -112,7 +112,7 @@ for i in 1..nb_of_panel do {
 
     else {
 
-        orientation_panels[i] = atan2(y_edge_pts[i+1]-y_edge_pts[i],x_edge_pts[i+1]-x_edge_pts[i]);
+        orientation_panels[i] = atan2(y_edge_pts[i]-y_edge_pts[i-1],x_edge_pts[i]-x_edge_pts[i-1]);
 
         if orientation_panels[i] < 0 then {
 
