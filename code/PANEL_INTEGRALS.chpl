@@ -13,6 +13,10 @@ use Time ;
 use Math only cos, pi, sqrt, sin, atan2 , log;
 proc compute_integrals (cpu_num:int,len_panel ,panel_orient ,x_ctrl_pts ,y_ctrl_pts ,x_edge_pts,y_edge_pts) {
 
+
+       var watch: Timer;
+       watch.start();
+
        var intervals = x_ctrl_pts.size/cpu_num : int ;
        var rest = x_ctrl_pts.size-intervals*cpu_num : int ;
 
@@ -21,8 +25,7 @@ proc compute_integrals (cpu_num:int,len_panel ,panel_orient ,x_ctrl_pts ,y_ctrl_
        var I_t : [1..x_ctrl_pts.size,1..x_ctrl_pts.size] real;
 
        var lock1 : atomic int;
-       var watch: Timer;
-       watch.start();
+
        var length = x_ctrl_pts.size ; 
        forall task in 0..cpu_num-1 do {
 
@@ -79,8 +82,9 @@ proc compute_integrals (cpu_num:int,len_panel ,panel_orient ,x_ctrl_pts ,y_ctrl_
 
 
                             }
-
-                            if B-A**2 < 0 then {
+                            
+                            
+                            if B-A**2 <= 0 then {
 
                                    E = 0;
                             }
@@ -88,13 +92,18 @@ proc compute_integrals (cpu_num:int,len_panel ,panel_orient ,x_ctrl_pts ,y_ctrl_
                                    E = sqrt(B-A**2);
                             }
                               
+                            
 
-                            if i == j then {
+                            if (i == j) then {
 
                                    I_n[i,j] = pi;
                                    I_t[i,j] = 0;
-
                             }
+                            else if (E == 0) then {
+                                   I_t[i,j] = 0;
+                                   I_n[i,j] = 0;
+                            }
+
                             else {
 
                                    I_n[i,j] = ( 0.5*C_n*log((len_panel[j]**2 + 2*A*len_panel[j] + B)/B)
@@ -103,19 +112,21 @@ proc compute_integrals (cpu_num:int,len_panel ,panel_orient ,x_ctrl_pts ,y_ctrl_
                                    I_t[i,j] = ( 0.5*C_t*log((len_panel[j]**2 + 2*A*len_panel[j] + B)/B)
                                    + ((D_t-A*C_t)/E)*(atan2((len_panel[j]+A),E)-atan2(A,E)) );
                             }
+                            
+
+                            }
 
                      }
 
-              }
+
+              
 
               lock1.add(1);
               lock1.waitFor(cpu_num);
               
-       }
-
+              }
        watch.stop();
-
-       writeln("Time : " , watch.elapsed());
+       writeln("Time for Panel integrals process: " , watch.elapsed());
 
        return [I_n,I_t];
 

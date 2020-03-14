@@ -25,9 +25,6 @@ var old_y_edge_pts = y_airfoil_coordinates;
 
 
 
-
-
-
 writeln("|---GEOMETRY_PREP---| How much do you want to refine the geometry ? (enter 0 to keep the original)");
 
 var nb_ref = stdin.read(int);
@@ -40,6 +37,7 @@ var edge_points = [x_edge_pts,y_edge_pts] ;
 edge_points = refine_geometry(nb_ref,old_x_edge_pts,old_y_edge_pts);
 x_edge_pts = edge_points[1];
 y_edge_pts = edge_points[2];
+
 
 
 writeln("|---GEOMETRY_PREP---| ", x_edge_pts.size- old_x_edge_pts.size, " nodes added to the geometry !");
@@ -92,6 +90,7 @@ for i in 1..nb_of_panel do {
 
 }
 
+
 // Computing orientation angle of panels
 
 var orientation_panels : [1..nb_of_panel] real ;
@@ -124,6 +123,8 @@ for i in 1..nb_of_panel do {
 
 }
 
+
+
 // computing normal vector panel
 
 var normal_to_panels : [1..nb_of_panel] real ;
@@ -135,3 +136,6 @@ normal_to_panels = orientation_panels + pi/2;
 var beta_panels : [1..nb_of_panel] real ;
 
 beta_panels = normal_to_panels - aoa ;
+
+writeln("|---GEOMETRY_PREP---| Value of freestream velocity ? " );
+var v_inf = stdin.read(real);
