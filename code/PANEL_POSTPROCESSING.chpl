@@ -36,7 +36,7 @@ for i in 1..beta_pp.size do {
 
 var cl1 = -C_p*length_panel_pp*sin(beta_pp)*cos(aoa_pp);
 var cl2 = -C_p*length_panel_pp*cos(beta_pp)*sin(aoa_pp);
-var cd1 = -C_p*length_panel_pp*cos(beta_pp)*cos(aoa_pp);
+var cd1 = -C_p*length_panel_pp*sin(beta_pp)*sin(aoa_pp);
 var cd2 = -C_p*length_panel_pp*cos(beta_pp)*cos(aoa_pp);
 var C_l1 : real ;
 var C_l2 : real ;
@@ -51,7 +51,6 @@ C_d1 =  + reduce cd1 ;
 C_d2 =  + reduce cd2;
 C_d = C_d1 + C_d2;
 
-writeln(V_t);
-writeln(C_p);
-writeln(C_l);
-writeln(C_d);
+writeln(lambdas);
+
+

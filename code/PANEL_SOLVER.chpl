@@ -15,6 +15,7 @@ use Math only pi, cos;
 use LinearAlgebra;
 use Time ;
 
+
 var beta_pp = beta_panels;
 var aoa_pp = aoa ;
 var v_inf_pp = v_inf ;
@@ -33,6 +34,8 @@ var B : [1..x_ctrl_pts.size] real ;
 var integrals = [I_n,I_t];
 
 
+
+
 integrals = compute_integrals(num_CPU:int,length_panel ,orientation_panels ,x_ctrl_pts ,y_ctrl_pts ,x_edge_pts,y_edge_pts);
 
 I_n = integrals[1];
@@ -43,6 +46,14 @@ for i in 1..x_ctrl_pts.size do {
     B[i] = -v_inf*2*pi*cos(beta_panels[i]);
 
 }
+
+writeln("x_ctrl_pts : ", x_ctrl_pts, "\n");
+writeln("y_ctrl_pts : ", y_ctrl_pts, "\n");
+writeln("orientation_panels : ", orientation_panels, "\n");
+writeln("beta_angles : ", beta_panels, "\n");
+writeln("I_n :"  ,I_n, "\n");
+writeln("I_t :", I_t, "\n");
+writeln("B", B, "\n");
 
 
 var lambdas : [1..x_ctrl_pts.size] real ;

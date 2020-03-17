@@ -99,10 +99,10 @@ proc compute_integrals (cpu_num:int,len_panel ,panel_orient ,x_ctrl_pts ,y_ctrl_
                                    I_n[i,j] = pi;
                                    I_t[i,j] = 0;
                             }
-                            else if (E == 0) then {
-                                   I_t[i,j] = 0;
-                                   I_n[i,j] = 0;
-                            }
+                            // else if (E == 0) then {
+                            //        I_t[i,j] = 0;
+                            //        I_n[i,j] = pi;
+                            // }
 
                             else {
 
