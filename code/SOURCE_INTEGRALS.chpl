@@ -1,5 +1,5 @@
 /*
-File : PANEL_INTEGRALS.chpl
+File : SOURCE_INTEGRALS.chpl
 Author : Amin Ouled-Mohamed
 Date : 01/03/2020 22:02
 Last revised : 01/03/2020 01:35
@@ -59,6 +59,9 @@ proc compute_integrals (cpu_num:int,len_panel ,panel_orient ,x_ctrl_pts ,y_ctrl_
 
                             B = (x_ctrl_pts[i]-x_edge_pts[length])**2 + (y_ctrl_pts[i]-y_edge_pts[length])**2 ;
 
+                            // ADDED LENGTH TO PANEL ORIENT
+
+
                             C_n = sin(panel_orient[i]-panel_orient[j]);
 
                             D_n = -(x_ctrl_pts[i]-x_edge_pts[length])*sin(panel_orient[i]) + (y_ctrl_pts[i]-y_edge_pts[length])*cos(panel_orient[i]);
@@ -117,8 +120,6 @@ proc compute_integrals (cpu_num:int,len_panel ,panel_orient ,x_ctrl_pts ,y_ctrl_
                             }
 
                      }
-
-
               
 
               lock1.add(1);
@@ -126,7 +127,7 @@ proc compute_integrals (cpu_num:int,len_panel ,panel_orient ,x_ctrl_pts ,y_ctrl_
               
               }
        watch.stop();
-       writeln("Time for Panel integrals process: " , watch.elapsed());
+       writeln("Duration of Source Panel integrals process: " , watch.elapsed());
 
        return [I_n,I_t];
 

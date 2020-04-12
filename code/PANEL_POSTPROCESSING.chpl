@@ -12,7 +12,7 @@ Usage : input -->  lambdas and geometry info
                    V_t : tangential velocity
 */
 
-use PANEL_SOLVER only aoa_pp,v_inf_pp,beta_pp,lambdas,I_t,length_panel_pp;
+use PANEL_SOLVER only aoa_pp,v_inf_pp,beta_pp,lambdas,Is_t,length_panel_pp;
 use Math only pi,cos,sin;
 
 
@@ -26,7 +26,7 @@ var summation : real ;
 for i in 1..beta_pp.size do {
     summation = 0;
     for j in 1..beta_pp.size do {
-        summation += (lambdas[j]/(2*pi))*(I_t[i,j]);
+        summation += (lambdas[j]/(2*pi))*(Is_t[i,j]);
     }
     V_t[i] = v_inf_pp*sin(beta_pp[i]) + summation;
     C_p[i] = 1 - (V_t[i]/v_inf_pp)**2;
@@ -51,6 +51,5 @@ C_d1 =  + reduce cd1 ;
 C_d2 =  + reduce cd2;
 C_d = C_d1 + C_d2;
 
-writeln(lambdas);
 
 
