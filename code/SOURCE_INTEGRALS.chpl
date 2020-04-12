@@ -94,6 +94,7 @@ proc compute_integrals (cpu_num:int,len_panel ,panel_orient ,x_ctrl_pts ,y_ctrl_
                             else {
                                    E = sqrt(B-A**2);
                             }
+                            
                               
                             
 
@@ -114,6 +115,15 @@ proc compute_integrals (cpu_num:int,len_panel ,panel_orient ,x_ctrl_pts ,y_ctrl_
 
                                    I_t[i,j] = ( 0.5*C_t*log((len_panel[j]**2 + 2*A*len_panel[j] + B)/B)
                                    + ((D_t-A*C_t)/E)*(atan2((len_panel[j]+A),E)-atan2(A,E)) );
+                                   if isnan(I_n[i,j]) then {
+                                          I_n[i,j] = 0;
+
+                                   }
+
+                                   if isnan(I_t[i,j]) then {
+                                          I_t[i,j] = 0;
+
+                                   }
                             }
                             
 

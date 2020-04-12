@@ -52,30 +52,38 @@ Iv_t = integrals_vortex[2];
 // KUtta condition
 var kutta_line : [1..x_ctrl_pts.size] real ;
 kutta_line[1..x_ctrl_pts.size] = 0 ;
-kutta_line[1] = 1 ;
+
+kutta_line[1] = 1;
 kutta_line[x_ctrl_pts.size] = 1;
 
+
 Iv_n[x_ctrl_pts.size,1..x_ctrl_pts.size] = kutta_line;
+
 
 
 for i in 1..x_ctrl_pts.size do {
     B[i] = -v_inf*2*pi*cos(beta_panels[i]);
 
 }
+var B_gammas = B;
+
+B_gammas[x_ctrl_pts.size] = 0;
+
 
 
 // Solving linear system for gamma and lambdas
 var lambdas : [1..x_ctrl_pts.size] real ;
 lambdas = solve(Is_n,B);
 var gammas  : [1..x_ctrl_pts.size] real ;
-gammas = solve(Iv_n,B);
+gammas = solve(Iv_n,B_gammas);
 
 var sum_lambdas = +reduce (lambdas*length_panel);
-var sum_gammas = +reduce gammas;
+var sum_gammas = +reduce (gammas*length_panel);
 
 writeln("Sum lambdas : " , sum_lambdas);
-writeln("Sum gammas : ", sum_gammas);
+writeln("Circulation : ", sum_gammas);
 
+writeln("gammas : " , gammas);
 
 watch.stop();
 writeln("Time for whole process: " , watch.elapsed());

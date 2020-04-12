@@ -12,7 +12,7 @@ Usage : input -->  lambdas and geometry info
                    V_t : tangential velocity
 */
 
-use PANEL_SOLVER only aoa_pp,v_inf_pp,beta_pp,lambdas,Is_t,length_panel_pp;
+use PANEL_SOLVER only aoa_pp,v_inf_pp,beta_pp,lambdas,Is_t,length_panel_pp,gammas;
 use Math only pi,cos,sin;
 
 
@@ -42,6 +42,7 @@ var C_l1 : real ;
 var C_l2 : real ;
 var C_d1 : real ;
 var C_d2 : real ;
+var cl_gamma : real;
 
 
 C_l1 =  + reduce cl1;
@@ -50,6 +51,11 @@ C_l = C_l1 - C_l2;
 C_d1 =  + reduce cd1 ;
 C_d2 =  + reduce cd2;
 C_d = C_d1 + C_d2;
+
+//chord length hardcoded, should be fixed
+
+cl_gamma  = (+reduce (gammas*length_panel_pp)) / (0.5*v_inf_pp*1) ;
+writeln(cl_gamma);
 
 
 

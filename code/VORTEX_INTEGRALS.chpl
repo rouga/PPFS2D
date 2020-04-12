@@ -11,7 +11,7 @@ Usage : input -->  cpu_num : number of cpus to use
 */
 
 use Time ;
-use Math only cos, pi, sqrt, sin, atan2 , log;
+use Math only cos, pi, sqrt, sin, atan2 , log, isnan;
 proc compute_integrals_vortex (cpu_num:int,len_panel ,panel_orient ,x_ctrl_pts ,y_ctrl_pts ,x_edge_pts,y_edge_pts) {
 
 
@@ -114,6 +114,16 @@ proc compute_integrals_vortex (cpu_num:int,len_panel ,panel_orient ,x_ctrl_pts ,
 
                                    I_t[i,j] = -( 0.5*C_t*log((len_panel[j]**2 + 2*A*len_panel[j] + B)/B)
                                    + ((D_t-A*C_t)/E)*(atan2((len_panel[j]+A),E)-atan2(A,E)) );
+
+                                   if isnan(I_n[i,j]) then {
+                                          I_n[i,j] = 0;
+
+                                   }
+
+                                   if isnan(I_t[i,j]) then {
+                                          I_t[i,j] = 0;
+
+                                   }
                             }
                             
 
