@@ -12,18 +12,46 @@ Usage : input -->  lambdas and geometry info
                    V_t : tangential velocity
 */
 
-use PANEL_SOLVER only aoa_pp,v_inf_pp,beta_pp,lambdas,Is_t,length_panel_pp,gammas;
+use PANEL_SOLVER only aoa_pp,v_inf_pp,beta_pp,lambdas,gammas,Is_t,Iv_t,length_panel_pp;
 use Math only pi,cos,sin;
 
+var method : string ;
 
+writeln("|---PANEL_POSTPROCESSING---| Method to do the postprocessing (source/vortex) ?");
+method = stdin.read(string);
 
 var V_t : [1..beta_pp.size] real ;
 var C_l : real ;
 var C_d : real ;
 var C_p : [1..beta_pp.size] real ;
 var summation : real ;
+var cl_gamma : real; 
+
+if method.toLower() == "vortex" then {
+
 
 for i in 1..beta_pp.size do {
+    summation = 0;
+    for j in 1..beta_pp.size do {
+        summation += (-gammas[j]/(2*pi))*(Iv_t[i,j]);
+    }
+    V_t[i] = v_inf_pp*sin(beta_pp[i]) + summation;
+    C_p[i] = 1 - (V_t[i]/v_inf_pp)**2;
+
+}
+
+
+cl_gamma  = (+reduce (gammas*length_panel_pp)) / (0.5*v_inf_pp*1) ;
+writeln( " Cl : " , cl_gamma);
+}
+
+
+
+
+else if method.toLower() == "source" then {
+
+
+    for i in 1..beta_pp.size do {
     summation = 0;
     for j in 1..beta_pp.size do {
         summation += (lambdas[j]/(2*pi))*(Is_t[i,j]);
@@ -34,28 +62,7 @@ for i in 1..beta_pp.size do {
 }
 
 
-var cl1 = -C_p*length_panel_pp*sin(beta_pp)*cos(aoa_pp);
-var cl2 = -C_p*length_panel_pp*cos(beta_pp)*sin(aoa_pp);
-var cd1 = -C_p*length_panel_pp*sin(beta_pp)*sin(aoa_pp);
-var cd2 = -C_p*length_panel_pp*cos(beta_pp)*cos(aoa_pp);
-var C_l1 : real ;
-var C_l2 : real ;
-var C_d1 : real ;
-var C_d2 : real ;
-var cl_gamma : real;
+writeln(" Cl : 0");
 
-
-C_l1 =  + reduce cl1;
-C_l2 =  + reduce cl2;
-C_l = C_l1 - C_l2;
-C_d1 =  + reduce cd1 ;
-C_d2 =  + reduce cd2;
-C_d = C_d1 + C_d2;
-
-//chord length hardcoded, should be fixed
-
-cl_gamma  = (+reduce (gammas*length_panel_pp)) / (0.5*v_inf_pp*1) ;
-writeln(cl_gamma);
-
-
+}
 

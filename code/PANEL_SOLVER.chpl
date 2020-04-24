@@ -83,7 +83,6 @@ var sum_gammas = +reduce (gammas*length_panel);
 writeln("Sum lambdas : " , sum_lambdas);
 writeln("Circulation : ", sum_gammas);
 
-writeln("gammas : " , gammas);
 
 watch.stop();
 writeln("Time for whole process: " , watch.elapsed());

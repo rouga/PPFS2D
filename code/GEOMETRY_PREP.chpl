@@ -47,10 +47,10 @@ writeln("Previous total number of nodes : " ,old_x_edge_pts.size, "\nNew total n
 var nb_of_panel = x_edge_pts.size;
 
 //Asking for value of angle of attack (begin with a single value but can include a range)
-var aoa : real;
+var aoa_d : real;
 writeln("|---GEOMETRY_PREP---| Value of angle of attack of freestream velocity (in degrees) ?");
-aoa = stdin.read(real);
-aoa = aoa*(pi/180);
+aoa_d = stdin.read(real);
+var aoa = aoa_d*(pi/180);
 
 // computing control points for each panel
 var x_ctrl_pts, y_ctrl_pts : [1..nb_of_panel] real ;
