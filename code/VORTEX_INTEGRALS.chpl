@@ -100,7 +100,7 @@ proc compute_integrals_vortex (cpu_num:int,len_panel ,panel_orient ,x_ctrl_pts ,
                             if (i == j) then {
 
                                    I_n[i,j] = 0;
-                                   I_t[i,j] = 0;
+
                             }
                             // else if (E == 0) then {
                             //        I_t[i,j] = 0;
