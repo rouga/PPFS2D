@@ -12,7 +12,7 @@ Usage : input -->  lambdas and geometry info
                    V_t : tangential velocity
 */
 
-use PANEL_SOLVER only aoa_pp,v_inf_pp,beta_pp,lambdas,gammas,Is_t,Iv_t,length_panel_pp;
+use PANEL_SOLVER only aoa_pp,v_inf_pp,beta_pp,lambdas,gammas,Is_t,Iv_t,length_panel_pp,x_ctrl_pts_pp;
 use Math only pi,cos,sin;
 
 var method : string ;
@@ -26,16 +26,17 @@ var C_d : real ;
 var C_p : [1..beta_pp.size] real ;
 var summation : real ;
 var cl_gamma : real; 
+var cm_gamma : real;
 
 if method.toLower() == "vortex" then {
 
 
-for i in 1..beta_pp.size do {
+for i in 1..x_ctrl_pts_pp.size do {
     summation = 0;
-    for j in 1..beta_pp.size do {
+    for j in 1..x_ctrl_pts_pp.size do {
         summation += (-gammas[j]/(2*pi))*(Iv_t[i,j]);
     }
-    V_t[i] = v_inf_pp*sin(beta_pp[i]) + summation;
+    V_t[i] = v_inf_pp*sin(beta_pp[i])+ summation;
     C_p[i] = 1 - (V_t[i]/v_inf_pp)**2;
 
 }
@@ -43,6 +44,8 @@ for i in 1..beta_pp.size do {
 
 cl_gamma  = (+reduce (gammas*length_panel_pp)) / (0.5*v_inf_pp*1) ;
 writeln( " Cl : " , cl_gamma);
+cm_gamma = (+reduce (gammas*length_panel_pp*x_ctrl_pts_pp)) / (0.5*v_inf_pp*1);
+writeln("Cm : " , cm_gamma , "  -testing");
 }
 
 

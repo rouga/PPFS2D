@@ -112,7 +112,7 @@ proc compute_integrals_vortex (cpu_num:int,len_panel ,panel_orient ,x_ctrl_pts ,
                                    I_n[i,j] = -( 0.5*C_n*log((len_panel[j]**2 + 2*A*len_panel[j] + B)/B)
                                                  + ((D_n-A*C_n)/E)*(atan2((len_panel[j]+A),E)-atan2(A,E)) );
 
-                                   I_t[i,j] = -( 0.5*C_t*log((len_panel[j]**2 + 2*A*len_panel[j] + B)/B)
+                                   I_t[i,j] = ( 0.5*C_t*log((len_panel[j]**2 + 2*A*len_panel[j] + B)/B)
                                    + ((D_t-A*C_t)/E)*(atan2((len_panel[j]+A),E)-atan2(A,E)) );
 
                                    if isnan(I_n[i,j]) then {

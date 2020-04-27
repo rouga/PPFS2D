@@ -21,6 +21,7 @@ var beta_pp = beta_panels;
 var aoa_pp = aoa ;
 var v_inf_pp = v_inf ;
 var length_panel_pp = length_panel;
+var x_ctrl_pts_pp = x_ctrl_pts;
 
 writeln("|---PANEL_SOLVER---| Number of CPU cores used for solving the problem : ", here.numPUs() );
 var num_CPU = here.numPUs();
