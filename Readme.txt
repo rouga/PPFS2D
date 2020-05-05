@@ -106,7 +106,10 @@ x_ctrl_pts          CP
 0.990346          0.911222
 0.998131          0.99806
 
-IMPORANT : The subroutine to compute Cp values for lifting surfaces is still in alpha testing. Thus, it's very likely output results are inaccurate. 
+IMPORANT : The subroutine to compute Cp values for lifting surfaces is still in alpha testing. Thus, it's very likely output results are inaccurate.
+
+
+Same procedure can be applied for cylinder.dat and naca0012.dat demo files.
 
 
 
