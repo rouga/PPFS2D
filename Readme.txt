@@ -1,4 +1,5 @@
 PARALLEL POTENTIAL FLOW SOLVER 2D - PPFS2D
+(Linux-only software)
 
 ===== DESCRIPTION ======
 
@@ -42,7 +43,7 @@ PPFS2D
 
 1) Download zip folder from : https://github.com/rouga/PPFS2D
 
-2) Open linux command line and access directory where the zip folder is downloade
+2) Open linux command line and access directory where the zip folder is downloaded
 
 3) Unzip the folder with the command : unzip <folder_name>
 
@@ -116,13 +117,3 @@ Same procedure can be applied for cylinder.dat and naca0012.dat demo files.
 
 Feel free to add options, optimizations or bug fixes by committing to the following repository : https://github.com/rouga/PPFS2D
 Thank you !!
-
- 
-
-
-
-
-
-
- 
-
